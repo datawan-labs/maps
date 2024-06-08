@@ -2,7 +2,7 @@
   order pmtiles_proxy before reverse_proxy
 }
 
-{$PUBLIC_URL} {
+:8080 {
   handle_path /tiles/* {
     pmtiles_proxy {
       bucket {$BUCKET}
