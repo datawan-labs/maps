@@ -1,0 +1,18 @@
+{
+  order pmtiles_proxy before reverse_proxy
+}
+
+{$PUBLIC_URL} {
+  handle_path /tiles/* {
+    pmtiles_proxy {
+      bucket {$BUCKET}
+      
+      cache_size 256
+
+      # used to embed a tiles URL in TileJSON.
+      public_url {$PUBLIC_URL}/tiles
+    }
+  }
+
+  file_server
+}
