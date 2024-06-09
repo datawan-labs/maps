@@ -3,14 +3,14 @@
 }
 
 :8080 {
-  handle_path /tiles/* {
+  handle /tiles/earth* {
     pmtiles_proxy {
       bucket {$BUCKET}
       
       cache_size 256
 
       # used to embed a tiles URL in TileJSON.
-      public_url {$PUBLIC_URL}/tiles
+      public_url {$PUBLIC_URL}
     }
   }
 
