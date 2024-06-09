@@ -4,6 +4,12 @@
 
 :8080 {
   handle /tiles/earth* {
+    header {
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET"
+        defer
+    }
+
     pmtiles_proxy {
       bucket {$BUCKET}
       
