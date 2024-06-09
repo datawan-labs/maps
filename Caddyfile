@@ -3,7 +3,7 @@
 }
 
 :8080 {
-  handle /tiles/earth* {
+  handle /tiles/planet* {
     header {
         Access-Control-Allow-Origin *
         Access-Control-Allow-Methods "GET"

@@ -26,6 +26,8 @@ FROM caddy:alpine
 
 COPY Caddyfile /etc/caddy/
 
+COPY maps /srv/
+
 COPY --from=frontend-build /app/dist /srv
 
 COPY --from=caddy-build /usr/bin/caddy /usr/bin/caddy
