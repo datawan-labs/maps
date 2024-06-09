@@ -3,13 +3,13 @@
 }
 
 :8080 {
-  handle /tiles/planet* {
-    header {
-        Access-Control-Allow-Origin *
-        Access-Control-Allow-Methods "GET"
-        defer
-    }
+  header {
+      Access-Control-Allow-Origin *
+      Access-Control-Allow-Methods "GET"
+      defer
+  }
 
+  handle /tiles/planet* {
     pmtiles_proxy {
       bucket {$BUCKET}
       
