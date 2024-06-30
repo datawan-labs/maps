@@ -6,33 +6,33 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "biome check --verbose --apply .",
+    "lint": "biome check --verbose --write .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.0.21",
     "@fontsource-variable/plus-jakarta-sans": "^5.0.21",
-    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "lucide-react": "^0.390.0",
-    "maplibre-gl": "^4.3.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "lucide-react": "^0.399.0",
+    "maplibre-gl": "^4.5.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-map-gl": "^7.1.7",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.7.3",
-    "@types/node": "^20.14.2",
-    "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@biomejs/biome": "1.8.3",
+    "@types/node": "^20.14.9",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.38",
+    "postcss": "^8.4.39",
     "tailwindcss": "^3.4.4",
-    "typescript": "^5.2.2",
-    "vite": "^5.2.0"
+    "typescript": "^5.5.2",
+    "vite": "^5.3.2"
   }
 }
