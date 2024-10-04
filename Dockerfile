@@ -1,4 +1,4 @@
-FROM node:20-slim as frontend-build
+FROM node:22-slim AS frontend-build
 
 ENV PNPM_HOME="/pnpm"
 
@@ -16,13 +16,13 @@ RUN pnpm run build
 
 
 # build caddy with some extensions
-FROM caddy:builder-alpine AS caddy-build
+FROM caddy:builder AS caddy-build
 
 RUN xcaddy build \
-    --with github.com/protomaps/go-pmtiles/caddy
+    --with github.com/protomaps/go-pmtiles/caddy@v1.21.0
 
 
-FROM caddy:alpine
+FROM caddy:latest
 
 COPY Caddyfile /etc/caddy/
 
