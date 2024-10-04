@@ -1,5 +1,13 @@
 {
   order pmtiles_proxy before reverse_proxy
+
+  servers {
+      metrics
+  }
+}
+
+:9091 {
+  metrics
 }
 
 :8080 {
