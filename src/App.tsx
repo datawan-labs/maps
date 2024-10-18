@@ -7,7 +7,7 @@ const App = () => {
     <div className="absolute h-svh w-full">
       <MapLibre
         attributionControl={false}
-        mapStyle="/styles/default.json"
+        mapStyle="/styles/light.json"
         style={{
           top: 0,
           left: 0,
