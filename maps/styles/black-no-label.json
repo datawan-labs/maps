@@ -6,7 +6,7 @@
       "url": "https://maps.datawan.id/tiles/planet.json"
     }
   },
-  "sprite": "https://maps.datawan.id/sprites/blank",
+  "sprite": "https://maps.datawan.id/sprites/black",
   "glyphs": "https://maps.datawan.id/glyphs/{fontstack}/{range}.pbf",
   "layers": [
     {
