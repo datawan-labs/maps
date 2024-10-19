@@ -127,6 +127,7 @@ class S3Source implements Source {
 
     console.log({
       stage: "s3 request",
+      header: header,
       status: response.status,
       size: response.headers.get("Content-Length"),
     });
