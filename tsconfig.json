@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
 
@@ -20,11 +20,25 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+    "types": ["@cloudflare/workers-types/2023-07-01"],
+
+    "allowJs": true,
+    "checkJs": false,
+
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": ["./src/**/*.test.{ts,tsx}"],
+  "include": [
+    "worker-configuration.d.ts",
+    "vite.config.mts",
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
+  ],
+  "references": [{ "path": "./tsconfig.cf.test.json" }]
 }
