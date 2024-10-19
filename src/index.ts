@@ -167,6 +167,8 @@ export default {
 
     const cached = await cache.match(request.url);
 
+    console.log({ stage: "cached" });
+
     /**
      * if existing url match with the cache, return the cache, no
      * server roundtrip to S3
@@ -216,13 +218,21 @@ export default {
 
     const pmtiles = new PMTiles(source, CACHE, nativeDecompress);
 
+    console.log({ stage: "pmtile inisializations" });
+
     try {
       const pHeader = await pmtiles.getHeader();
+
+      console.log({ stage: "get header" });
 
       if (!tile) {
         cacheableHeaders.set("Content-Type", "application/json");
 
+        console.log({ stage: "get tile json" });
+
         const t = await pmtiles.getTileJson(`${url.origin}/${name}`);
+
+        console.log({ stage: "return tile json" });
 
         return cacheableResponse(JSON.stringify(t), cacheableHeaders, 200);
       }
@@ -259,6 +269,8 @@ export default {
        */
       const tiledata = await pmtiles.getZxy(tile[0], tile[1], tile[2]);
 
+      console.log({ stage: "get tile data" });
+
       if (!tiledata) return cacheableResponse(undefined, cacheableHeaders, 204);
 
       switch (pHeader.tileType) {
@@ -275,6 +287,8 @@ export default {
           cacheableHeaders.set("Content-Type", "image/webp");
           break;
       }
+
+      console.log({ stage: "return tile data" });
 
       return cacheableResponse(tiledata.data, cacheableHeaders, 200);
     } catch (e) {
