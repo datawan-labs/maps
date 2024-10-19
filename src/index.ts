@@ -278,7 +278,6 @@ export default {
 
       return cacheableResponse(tiledata.data, cacheableHeaders, 200);
     } catch (e) {
-      console.log(e);
       if (e instanceof KeyNotFoundError)
         return cacheableResponse("Archive not found", cacheableHeaders, 404);
       throw e;
