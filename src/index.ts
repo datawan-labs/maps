@@ -6,6 +6,7 @@ import {
   Compression,
   EtagMismatch,
   RangeResponse,
+  ResolvedValueCache,
 } from "pmtiles";
 
 const TILE =
@@ -213,7 +214,9 @@ export default {
 
     const source = new S3Source(env, name);
 
-    const pmtiles = new PMTiles(source, undefined, nativeDecompress);
+    const CACHE = new ResolvedValueCache(1, undefined, nativeDecompress);
+
+    const pmtiles = new PMTiles(source, CACHE, nativeDecompress);
 
     console.log({ stage: "pmtile inisializations" });
 
