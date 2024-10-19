@@ -6,7 +6,6 @@ import {
   Compression,
   EtagMismatch,
   RangeResponse,
-  ResolvedValueCache,
 } from "pmtiles";
 
 const TILE =
@@ -76,8 +75,6 @@ const nativeDecompress = async (
 
   throw Error("Compression method not supported");
 };
-
-const CACHE = new ResolvedValueCache(25, undefined, nativeDecompress);
 
 /**
  * external S3 implementation
@@ -216,7 +213,7 @@ export default {
 
     const source = new S3Source(env, name);
 
-    const pmtiles = new PMTiles(source, CACHE, nativeDecompress);
+    const pmtiles = new PMTiles(source, undefined, nativeDecompress);
 
     console.log({ stage: "pmtile inisializations" });
 
