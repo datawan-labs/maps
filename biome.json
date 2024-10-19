@@ -96,7 +96,7 @@
         }
       }
     },
-    "ignore": ["**/build/**", "**/dist/**", "**/coverage/**"]
+    "ignore": ["**/dist/**", "**/coverage/**", "worker-configuration.d.ts"]
   },
   "javascript": {
     "formatter": {

@@ -1,13 +1,15 @@
 {
-  "name": "@datawan/basemaps",
-  "private": true,
+  "name": "tiles",
   "version": "0.0.0",
-  "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev:assets": "vite",
+    "dev:server": "wrangler dev",
+    "build:assets": "tsc -p tsconfig.assets.build.json && vite build",
+    "test": "vitest",
     "lint": "biome check --verbose --write .",
-    "preview": "vite preview"
+    "cf:deploy": "pnpm build:assets && wrangler deploy",
+    "cf:typegen": "wrangler types"
   },
   "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.1.1",
@@ -25,6 +27,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@cloudflare/vitest-pool-workers": "^0.5.2",
+    "@cloudflare/workers-types": "^4.20241018.0",
     "@types/node": "^22.7.6",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
@@ -33,6 +37,8 @@
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3",
-    "vite": "^5.4.9"
+    "vite": "^5.4.9",
+    "vitest": "2.0.5",
+    "wrangler": "^3.60.3"
   }
 }
