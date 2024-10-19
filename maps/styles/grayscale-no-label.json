@@ -3,11 +3,11 @@
   "sources": {
     "protomaps": {
       "type": "vector",
-      "url": "https://basemaps.datawan.id/tiles/planet.json"
+      "url": "https://maps.datawan.id/tiles/planet.json"
     }
   },
-  "sprite": "https://basemaps.datawan.id/sprites/grayscale",
-  "glyphs": "https://basemaps.datawan.id/glyphs/{fontstack}/{range}.pbf",
+  "sprite": "https://maps.datawan.id/sprites/grayscale",
+  "glyphs": "https://maps.datawan.id/glyphs/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "background",
