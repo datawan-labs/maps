@@ -4,10 +4,13 @@ import {
   PMTiles,
   TileType,
   Compression,
-  EtagMismatch,
   RangeResponse,
   ResolvedValueCache,
 } from "pmtiles";
+
+class KeyNotFoundError extends Error {}
+
+class MaximumAttempRequest extends Error {}
 
 const TILE =
   /^\/(?<NAME>[0-9a-zA-Z\/!\-_\.\*\'\(\)]+)\/(?<Z>\d+)\/(?<X>\d+)\/(?<Y>\d+).(?<EXT>[a-z]+)$/;
@@ -57,8 +60,6 @@ const getTilePath = (path: string) => {
   return { ok: false, name: "", tile: [0, 0, 0], ext: "" };
 };
 
-class KeyNotFoundError extends Error {}
-
 const nativeDecompress = async (
   buf: ArrayBuffer,
   compression: Compression
@@ -106,7 +107,7 @@ class S3Source implements Source {
   async getBytes(
     offset: number,
     length: number,
-    signal?: AbortSignal,
+    _signal?: AbortSignal,
     etag?: string
   ): Promise<RangeResponse> {
     const url = new URL(this.env.BUCKET);
@@ -119,45 +120,64 @@ class S3Source implements Source {
 
     if (etag) header.set("If-Match", etag);
 
-    const response = await this.client.fetch(url, {
-      cf: { cacheEverything: true },
-      headers: header,
-      signal: signal,
-    });
+    /**
+     * we do 3 attemp to request data to S3, because we don't know
+     * how behaviour from cloudflare when using fetch, sometimes they cache the response
+     * sometimes not. we will check if result is not exceeded the bytes
+     * request in range request.
+     */
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const controller = new AbortController();
 
-    console.log({
-      stage: "s3 request",
-      header: header,
-      status: response.status,
-      size: response.headers.get("Content-Length"),
-    });
+      const response = await this.client.fetch(url, {
+        cf: { cacheEverything: false },
+        headers: header,
+        signal: controller.signal,
+      });
 
-    if (!response.ok) throw new KeyNotFoundError("Not Found");
+      if (!response.ok) throw new KeyNotFoundError("Not Found");
 
-    if (!response.body) throw new EtagMismatch();
+      /**
+       * check total bytes, for some reason cloudflare does not include
+       * range request to origin server. so if we don't check this, your
+       * bill can be nightmare.
+       *
+       * - https://community.cloudflare.com/t/cloudflare-worker-fetch-ignores-byte-request-range-on-initial-request/395047/4
+       * - https://community.cloudflare.com/t/workers-dont-support-range-requests-on-gzip-files/614199
+       */
+      if (parseInt(response.headers.get("Content-Length")!) > length) {
+        controller.abort();
 
-    const buffer = await response.arrayBuffer();
+        continue;
+      }
 
-    const newEtag = response.headers.get("ETag")!;
+      const buffer = await response.arrayBuffer();
 
-    const expires = response.headers.get("Expires")!;
+      const newEtag = response.headers.get("ETag")!;
 
-    const cacheControl = response.headers.get("Cache-Control")!;
+      const expires = response.headers.get("Expires")!;
 
-    return {
-      data: buffer,
-      etag: newEtag,
-      expires: expires,
-      cacheControl: cacheControl,
-    };
+      const cacheControl = response.headers.get("Cache-Control")!;
+
+      return {
+        data: buffer,
+        etag: newEtag,
+        expires: expires,
+        cacheControl: cacheControl,
+      };
+    }
+
+    throw new MaximumAttempRequest("failed to get resources from origin");
   }
 }
+
+const CACHE = new ResolvedValueCache(25, undefined, nativeDecompress);
 
 export default {
   async fetch(
     request: Request,
     env: Env,
-    _ctx: ExecutionContext
+    ctx: ExecutionContext
   ): Promise<Response> {
     if (request.method.toUpperCase() === "POST")
       return new Response(undefined, { status: 405 });
@@ -169,7 +189,31 @@ export default {
     if (!ok) return new Response("Invalid URL", { status: 404 });
 
     /**
-     * generate response with caching
+     * we open new cache with custom keys
+     */
+    const cache = await caches.open("datawan-maps");
+
+    const cached = await cache.match(request.url);
+
+    /**
+     * if existing url match with the cache, return the cache, no
+     * server roundtrip to S3
+     */
+    if (cached) {
+      const respHeaders = new Headers(cached.headers);
+
+      respHeaders.set("Access-Control-Allow-Origin", "*");
+
+      respHeaders.set("Vary", "Origin");
+
+      return new Response(cached.body, {
+        headers: respHeaders,
+        status: cached.status,
+      });
+    }
+
+    /**
+     * cache resoponse
      */
     const cacheableResponse = (
       body: ArrayBuffer | string | undefined,
@@ -179,6 +223,13 @@ export default {
       cacheableHeaders.set("Cache-Control", "public, max-age=86400");
 
       const respHeaders = new Headers(cacheableHeaders);
+
+      const cacheable = new Response(body, {
+        headers: cacheableHeaders,
+        status: status,
+      });
+
+      ctx.waitUntil(cache.put(request.url, cacheable));
 
       respHeaders.set("Access-Control-Allow-Origin", "*");
 
@@ -190,8 +241,6 @@ export default {
     const cacheableHeaders = new Headers();
 
     const source = new S3Source(env, name);
-
-    const CACHE = new ResolvedValueCache(1, undefined, nativeDecompress);
 
     const pmtiles = new PMTiles(source, CACHE, nativeDecompress);
 
@@ -259,6 +308,10 @@ export default {
     } catch (e) {
       if (e instanceof KeyNotFoundError)
         return cacheableResponse("Archive not found", cacheableHeaders, 404);
+      if (e instanceof MaximumAttempRequest)
+        return new Response("Failed to get data", { status: 400 });
+      if (e instanceof Error && e.name === "AbortError")
+        return new Response("request abborted", { status: 400 });
       throw e;
     }
   },
