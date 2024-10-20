@@ -179,10 +179,13 @@ export default {
     env: Env,
     ctx: ExecutionContext
   ): Promise<Response> {
-    if (request.method.toUpperCase() === "POST")
-      return new Response(undefined, { status: 405 });
-
     const url = new URL(request.url);
+
+    if (!url.pathname.startsWith("/tiles/"))
+      return new Response("Not Found", { status: 404 });
+
+    if (request.method.toUpperCase() === "POST")
+      return new Response("Method Not Allowed", { status: 405 });
 
     const { ok, name, tile, ext } = getTilePath(url.pathname);
 
