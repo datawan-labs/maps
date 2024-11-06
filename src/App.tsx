@@ -7,7 +7,7 @@ const App = () => {
     <div className="absolute h-svh w-full">
       <MapLibre
         attributionControl={false}
-        mapStyle="/styles/black.json"
+        mapStyle="https://maps.datawan.id/styles/black.json"
         style={{
           top: 0,
           left: 0,
