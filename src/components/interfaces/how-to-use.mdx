@@ -1,0 +1,57 @@
+# How To Use
+
+All styles provided in this website follow mapbox / maplibre styles specifications. you can use the styles with library like mapbox or maplibre.
+
+> {props.styles}
+
+## Mapbox
+
+Mapbox requires a mapbox access token in order to access the map renderer, and generates billable events regardlesss of whether you are displaying your own maps / styles.
+
+```js
+mapboxgl.accessToken = "your-access-token";
+
+const map = new mapboxgl.Map({
+  container: "map",
+  style: "your-style", // change this
+  zoom: 1,
+  center: [30, 15],
+});
+```
+
+## Maplibre
+
+Maplibre is community fork of mapbox-gl, since Mapbox decided to publish future versions of mapbox-gl-js under a proprietary license in December 2020. You can use this library free without charge as long as you use free map styles. Here example using maplibre with Datawan Styles.
+
+```js
+var map = new maplibregl.Map({
+  style: "your-style", // change this
+  container: "map",
+  center: [0, 0],
+  zoom: 1,
+});
+```
+
+## React Map GL
+
+`react-map-gl` is a collection of React components designed to provide a React API for mapbox-gl or maplibre-gl.
+
+```jsx
+import * as React from "react";
+import Map from "react-map-gl";
+
+function App() {
+  return (
+    <Map
+      mapStyle="your-style" // change this
+      style={{ width: 600, height: 400 }}
+      mapboxAccessToken="<Mapbox access token>" // use maplibre version instead
+      initialViewState={{
+        longitude: -122.4,
+        latitude: 37.8,
+        zoom: 14,
+      }}
+    />
+  );
+}
+```

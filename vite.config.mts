@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
 import { Plugin } from "vite";
+import mdx from "@mdx-js/rollup";
+import remarkGfm from "remark-gfm";
 import react from "@vitejs/plugin-react";
 import { defineWorkersConfig } from "@cloudflare/vitest-pool-workers/config";
 
@@ -29,7 +31,7 @@ const copyMapsAssets = (): Plugin => {
 };
 
 export default defineWorkersConfig({
-  plugins: [react(), copyMapsAssets()],
+  plugins: [react(), mdx({ remarkPlugins: [remarkGfm] }), copyMapsAssets()],
   build: { outDir: OUT_DIR },
   resolve: {
     alias: {
