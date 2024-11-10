@@ -3,7 +3,8 @@
   "sources": {
     "protomaps": {
       "type": "vector",
-      "url": "https://maps.datawan.id/tiles/planet.json"
+      "url": "https://maps.datawan.id/tiles/planet.json",
+      "attribution": "<a href=\"https://datawan.id\">Datawan</a> | <a href=\"https://github.com/protomaps/basemaps\">Protomaps</a> © <a href=\"https://openstreetmap.org\">OpenStreetMap</a>"
     }
   },
   "sprite": "https://maps.datawan.id/sprites/black",

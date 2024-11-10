@@ -10,7 +10,6 @@ const App = () => {
         <WidgetMobile />
         <MapInstance
           antialias={true}
-          attributionControl={false}
           mapStyle={MAP_STYLES[1].styles[4].styles}
           mapView={{ zoom: 12, center: [106.822657, -6.207102] }}
           style={{

@@ -44,4 +44,8 @@ We provide 11 styles, and all styles based on [protomaps basemaps](https://githu
 
 ## Attribution
 
-You must add attribution if you use any of these styles. At least, include OpenStreetMap contributors.
+You must add attribution if you use any of these styles. At least, include OpenStreetMap contributors, or full attribution
+
+```html
+<a href="https://datawan.id">Datawan</a> | <a href="https://github.com/protomaps/basemaps">Protomaps</a> © <a href="https://openstreetmap.org">OpenStreetMap</a>
+```
