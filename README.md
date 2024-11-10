@@ -44,4 +44,4 @@ We provide 11 styles, and all styles based on [protomaps basemaps](https://githu
 
 ## Attribution
 
-You must add attribution if you use any of these styles. At a minimum, include OpenStreetMap contributors.
+You must add attribution if you use any of these styles. At least, include OpenStreetMap contributors.
