@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
-import { Plugin } from "vite";
 import mdx from "@mdx-js/rollup";
 import remarkGfm from "remark-gfm";
+import { PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import { defineWorkersConfig } from "@cloudflare/vitest-pool-workers/config";
 
@@ -11,7 +11,7 @@ const OUT_DIR = "./dist";
 /**
  * copy maps assets to dist folder
  */
-const copyMapsAssets = (): Plugin => {
+const copyMapsAssets = (): PluginOption => {
   return {
     name: "copy-maps-assets",
     apply: "build",
@@ -31,13 +31,13 @@ const copyMapsAssets = (): Plugin => {
 };
 
 export default defineWorkersConfig({
-  plugins: [react(), mdx({ remarkPlugins: [remarkGfm] }), copyMapsAssets()],
   build: { outDir: OUT_DIR },
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
+  plugins: [
+    react(),
+    mdx({ remarkPlugins: [remarkGfm] }),
+    copyMapsAssets(),
+  ] as never,
+  resolve: { alias: { "@": path.resolve(__dirname, "./src") } },
   test: {
     poolOptions: {
       workers: {
