@@ -4,6 +4,7 @@ import mdx from "@mdx-js/rollup";
 import remarkGfm from "remark-gfm";
 import { PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import { defineWorkersConfig } from "@cloudflare/vitest-pool-workers/config";
 
 const OUT_DIR = "./dist";
@@ -34,10 +35,16 @@ export default defineWorkersConfig({
   build: { outDir: OUT_DIR },
   plugins: [
     react(),
-    mdx({ remarkPlugins: [remarkGfm] }),
     copyMapsAssets(),
+    TanStackRouterVite({ generatedRouteTree: "./src/route-tree-gen.ts" }),
+    mdx({ remarkPlugins: [remarkGfm] }),
   ] as never,
-  resolve: { alias: { "@": path.resolve(__dirname, "./src") } },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      "@tabler/icons-react": "@tabler/icons-react/dist/esm/icons/index.mjs",
+    },
+  },
   test: {
     poolOptions: {
       workers: {

@@ -20,7 +20,7 @@
     {
       "id": "earth",
       "type": "fill",
-      "filter": ["==", ["geometry-type"], "Polygon"],
+      "filter": ["==", "$type", "Polygon"],
       "source": "protomaps",
       "source-layer": "earth",
       "paint": {
@@ -248,7 +248,7 @@
     {
       "id": "water",
       "type": "fill",
-      "filter": ["==", ["geometry-type"], "Polygon"],
+      "filter": ["==", "$type", "Polygon"],
       "source": "protomaps",
       "source-layer": "water",
       "paint": {

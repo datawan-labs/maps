@@ -20,7 +20,7 @@
       "type": "fill",
       "source": "protomaps",
       "source-layer": "earth",
-      "filter": ["==", ["geometry-type"], "Polygon"],
+      "filter": ["==", "$type", "Polygon"],
       "paint": { "fill-color": "#e0e0e0" }
     },
     {
@@ -215,7 +215,7 @@
       "type": "fill",
       "source": "protomaps",
       "source-layer": "water",
-      "filter": ["==", ["geometry-type"], "Polygon"],
+      "filter": ["==", "$type", "Polygon"],
       "paint": { "fill-color": "#80deea" }
     },
     {

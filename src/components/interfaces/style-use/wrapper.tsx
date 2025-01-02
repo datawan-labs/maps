@@ -13,7 +13,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
-export const WidgetDesktop = () => {
+const WidgetDesktop = () => {
   return (
     <div className="absolute right-0 left-0 z-10 hidden max-h-svh max-w-sm overflow-hidden p-4 md:flex">
       <Card className="flex w-full flex-col overflow-hidden">
@@ -30,7 +30,10 @@ export const WidgetDesktop = () => {
             <CopyStyles />
             <Dialog>
               <DialogTrigger className="text-left text-muted-foreground text-sm">
-                <span>Click here to how to use this styles</span>
+                <span>
+                  Click <span className="underline">here</span> to how to use
+                  this styles
+                </span>
               </DialogTrigger>
               <DialogContent className="flex max-h-svh max-w-2xl flex-col px-0">
                 <div className="prose w-full flex-1 overflow-y-auto overflow-x-hidden px-4">
@@ -48,7 +51,7 @@ export const WidgetDesktop = () => {
   );
 };
 
-export const WidgetMobile = () => {
+const WidgetMobile = () => {
   return (
     <Drawer>
       <div className="absolute bottom-0 left-0 z-10 flex p-4 pb-4 md:hidden">
@@ -87,3 +90,10 @@ export const WidgetMobile = () => {
     </Drawer>
   );
 };
+
+export const StyleUseWidgetWrapper = () => (
+  <div>
+    <WidgetDesktop />
+    <WidgetMobile />
+  </div>
+);
